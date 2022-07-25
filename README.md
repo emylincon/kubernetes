@@ -35,3 +35,33 @@ kubectl exec -ti nginx-deployment-66b6c48dd5-bsnzm -- bash
 minikube service --url  my-service 
 
 ```
+
+## Namespace
+* get namespaces
+```bash
+kubectl get namespaces
+```
+* create namespace
+```
+kubectl create namespace <namespace>
+```
+* get pods in a namespace
+```bash
+kubecl get pods -n <namespace>
+```
+* delete namespace
+```bash
+kubectl delete namespace <namespace>
+```
+* get current namespace
+```bash
+kubectl config view --minify --output 'jsonpath={..namespace}'
+```
+or 
+```bash
+kubectl describe sa default | grep Namespace
+```
+* set namespace
+```bash
+kubectl config set-context --current --namespace=my-namespace
+```
