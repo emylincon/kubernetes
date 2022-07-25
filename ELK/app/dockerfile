@@ -1,0 +1,10 @@
+FROM golang:alpine
+
+WORKDIR /app
+
+COPY . .
+
+RUN go mod init app && go build .
+
+
+CMD ["./app"]

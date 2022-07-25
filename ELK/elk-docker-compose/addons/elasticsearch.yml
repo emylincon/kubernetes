@@ -1,0 +1,6 @@
+cluster.name: "docker-cluster"
+network.host: 0.0.0.0
+xpack.security.autoconfiguration.enabled: false
+transport.host: 127.0.0.1
+http.host: 0.0.0.0
+xpack.security.enabled: true
