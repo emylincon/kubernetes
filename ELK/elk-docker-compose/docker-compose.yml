@@ -23,6 +23,7 @@ services:
       #- ./logstash.conf:/usr/share/logstash/config/logstash.conf
       - ./input-log:/input-log
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./app:/app
 
     depends_on:
       - Elasticsearch
@@ -30,6 +31,7 @@ services:
       - '9600:9600'
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+      LOGPATH: "/input-log"
     networks:
       - elk
 
@@ -45,6 +47,7 @@ services:
       - Elasticsearch
     networks:
       - elk
+
 volumes:
   elastic_data: {}
 

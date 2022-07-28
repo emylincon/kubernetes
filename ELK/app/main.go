@@ -8,11 +8,7 @@ import (
 	"time"
 )
 
-// const logpath = "/var/log/app"
-
-const logpath = "log"
-
-func WriteLogFile() {
+func WriteLogFile(logpath string) {
 	filepath := fmt.Sprintf("%s/%v.log", logpath, time.Now().Unix())
 	f, err := os.OpenFile(filepath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
@@ -32,6 +28,10 @@ func WriteLogFile() {
 }
 
 func main() {
+	var logpath = "log"
+	if os.Getenv("LOGPATH") != "" {
+		logpath = os.Getenv("LOGPATH")
+	}
 	log.Println("log app started")
 	if _, err := os.Stat(logpath); os.IsNotExist(err) {
 		if err := os.MkdirAll(logpath, os.ModePerm); err != nil {
@@ -41,7 +41,7 @@ func main() {
 	counter := 0
 	for {
 		log.Printf("Writing log to file %v", counter)
-		WriteLogFile()
+		WriteLogFile(logpath)
 		time.Sleep(5 * time.Second)
 	}
 
