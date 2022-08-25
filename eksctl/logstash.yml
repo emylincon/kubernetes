@@ -1,0 +1,121 @@
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: logstash-configmap
+  namespace: default
+data:
+  logstash.conf: |
+    # all input will come from filebeat, no local logs
+    input {
+      file {
+        path => "/app/log/*.log"
+      }
+    }
+
+    output {
+        elasticsearch {
+            hosts => [ "elasticsearch.default.svc.cluster.local:9200" ]
+            index => "emekalogindex"
+        }
+    }
+  app.sh: |
+    #!/bin/bash
+    count=0
+    while [ true ]; do
+        ((count++))
+        echo "$(date) $(hostname) Warn This is a test log entry $count" >>emeka.log
+        sleep 3
+    done
+---
+
+
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  logstash
+  namespace: default
+  labels:
+    app:  logstash
+spec:
+  selector:
+    matchLabels:
+      app: logstash
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  logstash
+    spec:
+      # securityContext:
+      #   runAsUser: 1099
+      #   runAsGroup: 1099
+      #   fsGroup: 1099
+      containers:
+      - name:  logstash
+        image:  logstash:7.16.2
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "0.5"
+            memory: 512Mi
+          limits:
+            cpu: "0.5"
+            memory: 512Mi
+
+        env:
+        - name: LS_JAVA_OPTS
+          value: "-Xmx256m -Xms256m"
+
+        ports:
+        - containerPort:  9600
+          name:  logstash
+        volumeMounts:
+        - name: logstash-configmap-volume
+          mountPath: /usr/share/logstash/pipeline/logstash.conf
+          subPath: logstash.conf
+        - name: empty
+          mountPath: /app/log
+        - name: mylog
+          mountPath: /app/log/app.sh
+          subPath: app.sh
+          
+      volumes:
+      - name: logstash-configmap-volume
+        configMap:
+          name: logstash-configmap
+          items:
+            - key: logstash.conf
+              path: logstash.conf
+      - name: mylog
+        configMap:
+          name: logstash-configmap
+          items:
+            - key: app.sh
+              path: app.sh
+      - name: empty
+        emptyDir: {}
+      restartPolicy: Always
+---
+# https://kubernetes.io/docs/concepts/services-networking/service/
+apiVersion: v1
+kind: Service
+metadata:
+  name: logstash
+  namespace: default
+spec:
+  selector:
+    app: logstash
+  type: ClusterIP
+  ports:
+  - name: logstash
+    protocol: TCP
+    port: 9600
+    targetPort: 9600
+---
