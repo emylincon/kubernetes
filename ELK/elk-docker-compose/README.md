@@ -17,4 +17,11 @@ PUT emekaindex/_doc/1
 
 
 ```
-* get message
+* logstash s3
+
+```conf
+  s3 {
+    bucket => "emeka-s3-logstash-input"
+     id => "s3_plugin_id"
+   }
+```
