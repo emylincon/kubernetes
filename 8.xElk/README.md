@@ -13,7 +13,7 @@ docker exec -ti -u root logstash bash
 ```bash
 cd /app/
 ```
-* start app
+* Start app
 ```bash
 ./app-amd64-linux
 ```
