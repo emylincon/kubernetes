@@ -26,6 +26,7 @@ GET _search
     "match_all": {}
   }
 }
+
 GET api/data_views/data_view/my-view/runtime_field/foo
 
 GET akaprod/_mapping/field/destination.geo.timezone
