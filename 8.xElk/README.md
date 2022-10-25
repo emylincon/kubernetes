@@ -17,3 +17,28 @@ cd /app/
 ```bash
 ./app-amd64-linux
 ```
+
+# ELK console commands
+```sql
+GET _search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+GET api/data_views/data_view/my-view/runtime_field/foo
+
+GET akaprod/_mapping/field/destination.geo.timezone
+
+POST akaprod/_mapping
+{
+    "destination.geo.timezone": {
+        "full_name": "destination.geo.timezone",
+        "mapping": {
+            "timezone": {
+                "type": "keyword"
+            }
+        }
+    }
+}
+```
