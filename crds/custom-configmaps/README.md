@@ -1,7 +1,10 @@
-# Create Custom ConfigMaps
+# Create Custom ConfigMaps
 This is a simple example of how to create custom configmaps in k8s.
+
 The custom controller will watch for changes to the custom resource and create/update/delete the configmap accordingly.
+
 The custom controller is a python script that uses the kubernetes python client to watch for changes to the custom resource.
+
 The custom controller is deployed as a deployment in k8s.
 
 ## Prerequisites
