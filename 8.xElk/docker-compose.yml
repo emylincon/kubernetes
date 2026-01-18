@@ -29,6 +29,8 @@ services:
       - ./logstash7.x/config/logstash.yml:/usr/share/logstash/config/logstash.yml
       - ./logstash7.x/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml
       - ./logstash7.x/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./logstash7.x/mutate.rb:/emeka/etc/logstash/mutate.rb
+      - ./logstash7.x/log/:/var/log/app/
       - ./app:/app
 
     depends_on:
