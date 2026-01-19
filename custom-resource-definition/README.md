@@ -1,4 +1,4 @@
-# CRDs
+# CRDs
 * create crd
 ```bash
 kubectl apply -f cron-crds.yaml
