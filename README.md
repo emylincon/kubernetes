@@ -65,3 +65,9 @@ kubectl describe sa default | grep Namespace
 ```bash
 kubectl config set-context --current --namespace=my-namespace
 ```
+
+## Verify Auth Access
+* verify if you have access to get pods in namespaced cluster.
+```bash
+kubectl auth can-i get pods
+```
