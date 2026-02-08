@@ -1,3 +1,5 @@
 *.env
 *input-log/
 *log/
+*bin/
+*node_modules/
