@@ -1,0 +1,13 @@
+encryptionsalt: v1:/8To99a/7mI=:v1:RqfEs1crZ1jA3xZW:Zewnz0vVK+V7C2UeWGsEZrHDxWR+rQ==
+
+config:
+  k8-website:appName: nginx
+  k8-website:deployment:
+    name: webapp
+    image: nginx
+    replicas: 1
+  k8-website:service:
+    name: webapp
+    type: ClusterIP
+    port: 80
+    targetPort: 80
