@@ -65,6 +65,10 @@ kubectl describe sa default | grep Namespace
 ```bash
 kubectl config set-context --current --namespace=my-namespace
 ```
+* scale replica set
+```bash
+kubectl scale rs nginx --replicas=5
+```
 
 ## Verify Auth Access
 * verify if you have access to get pods in namespaced cluster.
